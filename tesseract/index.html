@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>vForm</title>
+    <script src='tesseract.js'></script>
+
+</head>
+
+<body>
+    <div id="rst" ></div>
+</body>
+<script>
+    window.Tesseract = Tesseract.create({
+        workerPath: window.location.href.replace("index.html","")+'worker.js',
+        //langPath: 'https://cdn.rawgit.com/naptha/tessdata/gh-pages/3.02/',
+        corePath: window.location.href.replace("index.html","")+'index.js',
+    })
+    let myImage = new Image();
+    myImage.onload = function () {
+        Tesseract.recognize(myImage)
+            .then(function (result) {
+                document.getElementById("rst").innerHTML=result.html;
+            })    
+            document.body.appendChild(myImage)
+        }
+    myImage.src = "t1.png"
+</script>
+
+</html>
