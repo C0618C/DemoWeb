@@ -41,9 +41,10 @@ function loadFile(pathname, res) {
 }
 
 
-let pathDir = "";
+let pathDir = "";//子项目路径
 if(fpath){
-    fpath.replace(local + "\\", "").replace("\\", "/");
+    var fth_path = (local  + "\\").replace(/\\/g,"\\\\")
+    pathDir = fpath.replace((new RegExp(fth_path,"i")), "").replace("\\", "/");
     pathDir = pathDir.substr(0, pathDir.lastIndexOf("/"));
 }
 let localDir = __dirname.replace(/\/|\\test/i, "");
@@ -81,7 +82,7 @@ http.createServer(function (req, res) {
 }).listen(v_port);
 
 
-if (/\.(?:js|css|json|cfg|md|ico)/.test(fpath)) {
+if (/\.(?:js|css|json|cfg|md|ico|html)/.test(fpath)) {
     open(`http://127.0.0.1:${v_port}/${pathDir}`, { app: 'chrome' });
 } else {
     let tPath = fpath.replace(local, "").replace("\\", "/");

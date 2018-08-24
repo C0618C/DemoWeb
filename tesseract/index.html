@@ -10,23 +10,94 @@
 </head>
 
 <body>
+    <input type="text" id="J_MsgSender" />
     <div id="rst" ></div>
 </body>
 <script>
-    window.Tesseract = Tesseract.create({
-        workerPath: window.location.href.replace("index.html","")+'worker.js',
-        //langPath: 'https://cdn.rawgit.com/naptha/tessdata/gh-pages/3.02/',
-        corePath: window.location.href.replace("index.html","")+'index.js',
-    })
-    let myImage = new Image();
-    myImage.onload = function () {
-        Tesseract.recognize(myImage)
+    /* 图片识别demo
+        var p = window.location.href.replace("index.html","");
+        if(p.lastIndexOf("/")!=p.length-1)p+="/";
+        window.Tesseract = Tesseract.create({
+            workerPath: p+'worker.js',
+            //langPath: 'https://cdn.rawgit.com/naptha/tessdata/gh-pages/3.02/',
+            corePath: p+'index.js',
+        })
+        let myImage = new Image();
+        myImage.onload = function () {
+            Tesseract.recognize(myImage)
+                .then(function (result) {
+                    document.getElementById("rst").innerHTML=result.html;
+                })    
+                document.body.appendChild(myImage)
+            }
+        myImage.src = "t1.png"
+    */
+
+    //粘贴    
+    (function() {
+        var p = window.location.href.replace("index.html","");
+        if(p.lastIndexOf("/")!=p.length-1)p+="/";
+        window.Tesseract = Tesseract.create({
+            workerPath: p+'worker.js',
+            langPath: p,//'https://cdn.rawgit.com/naptha/tessdata/gh-pages/3.02/',
+            corePath: p+'index.js',
+        })
+
+        var sender = document.getElementById('J_MsgSender'),
+            list = document.getElementById('rst');
+        function pasteImage(imgObj,obj) {
+            // 读取文件后将其显示在网页中
+            Tesseract.recognize(imgObj,{
+                //lang: 'chi_sim',
+                tessedit_char_whitelist:['_',':',' ']
+            })
+            .progress(function  (p) { console.log('progress', p)    })
             .then(function (result) {
-                document.getElementById("rst").innerHTML=result.html;
-            })    
-            document.body.appendChild(myImage)
+                obj.value=BugFix_rsl(result.text);
+            })
         }
-    myImage.src = "t1.png"
+
+        function pasteString(strObj,obj){
+            strObj.getAsString(function(str) {
+                console.log(str);
+            });
+        }
+
+        sender.addEventListener('paste', function(ev) {
+            this.value="";
+            // 通过事件对象访问系统剪贴板
+            var ev = ev || window.event, clipboardData = ev.clipboardData,
+                i = 0, items, item, files;
+            if (clipboardData) {
+                items = clipboardData.items;
+                // files = clipboardData.files;
+    
+                // if (files && files.length) {
+                //     pasteImage(files[0]);
+                //     return;
+                // }
+                if (!items) { return; }
+    
+                for (; i < items.length; i++) {
+                    if (items[i].kind === 'file' && items[i].type.match(/^image\//i)) {
+                        pasteImage(items[i].getAsFile(),this);
+                    }else if(items[i].kind === 'string' && items[i].type ==="text/plain"){
+                        pasteString(items[i],this);
+                    }
+                }
+            }
+        });
+    })();
+
+    function BugFix_rsl(rsl){
+        if(/JDJDQD/.test(rsl)) return rsl.replace(/JDJDQD/g,"JD_JDQD");
+        else if(/(\d{4})7(\d{2})7(\d{2}) (\d{2})(\d{2})(\d{2}).(\d{3})/.test(rsl)) return RegExp.$1+'-'+RegExp.$2+'-'+RegExp.$3+' '+RegExp.$4+':'+RegExp.$5+':'+RegExp.$6+'.'+RegExp.$7;
+
+
+        return rsl;
+    }
+
+    //# sourceURL=aa.js
 </script>
 
 </html>
