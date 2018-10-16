@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>视频播放器</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="ckplayer.js"></script>
+</head>
+
+<body>
+
+    <div class="video" style="width: 1000px;height: 600px;"></div>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            var videoURL = location.search.replace("?",'');
+            if(!videoURL) console("地址不正确");
+            var videoObject = {
+                container: '.video',//“#”代表容器的ID，“.”或“”代表容器的class
+                variable: 'player',//该属性必需设置，值等于下面的new chplayer()的对象
+                //poster: '',//封面图片
+                video: videoURL //视频地址
+            };
+            var player = new ckplayer(videoObject);
+        });
+    </script>
+</body>
+
+</html>

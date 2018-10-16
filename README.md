@@ -5,3 +5,6 @@
 
 ## AntV G2
 一款蚂蚁金服出品的图表插件。
+
+## CKPlayer
+一款用flash实现兼容的Web播放器
