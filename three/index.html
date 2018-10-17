@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Three</title>
+    <style>
+
+    #fork_me{position: fixed;top:0px;right: 0px;z-index: 9999; }
+    </style>
+    <script src="three.js"></script>
+    <script>
+        function onLoad(){
+            //抓取作为Canvas容器的DIV
+            var container=document.getElementById("container");
+
+            //创建Three.js渲染器，并添加到DIV中
+            var renderer=new THREE.WebGLRenderer();
+            renderer.setSize(container.offsetWidth,container.offsetHeight);
+            container.appendChild(renderer.domElement);
+
+            //创建Three场景
+            var sence = new THREE.Scene();
+
+            //创建相机，并添加到场景中
+            var camera = new THREE.PerspectiveCamera(45,container.offsetWidth/container.offsetHeight,1,4000);
+            camera.position.set(0,0,3.33333);
+            sence.add(camera);
+
+            //创建一个集合体，并添加到场景中
+            var geometry = new THREE.PlaneGeometry(1,1);
+            var mesh = new THREE.Mesh(geometry,new THREE.MeshBasicMaterial());
+            sence.add(mesh);
+
+            //渲染绘制
+            renderer.render(sence,camera);
+        }
+    </script>
+</head>
+
+<body onload="onLoad();">
+    <div id="fork_me"><a href="https://github.com/vForm"><img src="//vmwed.com/CDN/img/forkme-on-github-right.png" title="trun to github"/></a></div>
+    <div id="container" style="width:500px;height:500px;background-color:#000000;"></div>
+</body>
+
+</html>
