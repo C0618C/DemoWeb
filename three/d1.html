@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>带纹理的旋转立方体</title>
+    <style>
+
+    #fork_me{position: fixed;top:0px;right: 0px;z-index: 9999; }
+    </style>
+    <script src="three.js"></script>
+    <script>
+        var renderer =null;
+        var scene  =null;
+        var camera = null;
+        var cube = null;
+        var animating = null;
+
+
+
+        function onLoad(){
+            //抓取作为Canvas容器的DIV
+            var container=document.getElementById("container");
+
+            //创建Three.js渲染器，并添加到DIV中
+            renderer=new THREE.WebGLRenderer();
+            renderer.setSize(container.offsetWidth,container.offsetHeight);
+            container.appendChild(renderer.domElement);
+
+            //创建Three场景
+            scene = new THREE.Scene();
+
+            //创建相机，并添加到场景中
+            camera = new THREE.PerspectiveCamera(45,container.offsetWidth/container.offsetHeight,1,4000);
+            camera.position.set(0,0,3);
+
+            //创建一个平衡光光源照射到物体上
+            var light = new THREE.DirectionalLight(0xffffff,1.5);
+            light.position.set(0,0,1);
+            scene.add(light);
+            
+            //创建一个接受光照并带有纹理映射的立方体，并添加到场景中
+            //首先，创建一个带纹理映射的立方体
+            var mapURL="pi.png";
+            var map = THREE.ImageUtils.loadTexture(mapURL);
+
+            //然后创建一个Phong材质来处理着色，并传递给纹理映射
+            var material = new THREE.MeshPhongMaterial({map:map});
+            //创建一个立方体的几何体
+            var geometry = new THREE.CubeGeometry(1.5,2,1.5);
+
+            //将集合体和材质放到一个网格中
+            cube = new THREE.Mesh(geometry,material);
+
+            cube.rotation.x=Math.PI/5;
+            cube.rotation.y=Math.PI/5;
+       
+            scene.add(cube);
+
+            //添加处理鼠标事件的函数，用于控制盒子动画的开关
+            addMouseHandler();
+
+            run();
+        }
+
+        function run(){
+            //渲染场景
+            renderer.render(scene,camera);
+
+            //
+            if(animating){
+                cube.rotation.y -=0.01;
+            }
+
+            requestAnimationFrame(run);
+        }
+
+        function addMouseHandler(){
+            var dom = renderer.domElement;
+            dom.addEventListener("mouseup",function(e){
+                e.preventDefault();
+                animating =!animating;
+            },false)
+        }
+    </script>
+</head>
+
+<body onload="onLoad();">
+    <div id="fork_me"><a href="https://github.com/vForm"><img src="//vmwed.com/CDN/img/forkme-on-github-right.png" title="trun to github"/></a></div>
+    <div id="container" style="width:800px;height:800px;background-color:#000000;"></div>
+</body>
+
+</html>
