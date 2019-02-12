@@ -8,45 +8,14 @@
             "type": "node",
             "request": "launch",
             "name": "开启服务器",
-            "program": "${workspaceRoot}/Test/run.js",
-            "args":["13457","${workspaceRoot}","${file}"]
+            "program": "${workspaceRoot}/../LiteWebsite/node_web/run.js",
+            "args":["-w","${fileDirname}"]
         },
-        // {0
-        //     "type": "PowerShell",
-        //     "request": "launch",
-        //     "name": "PowerShell Launch (IIS)",
-        //     "script": "${workspaceRoot}/test/run.ps1",
-        //     "args": [],
-        //     "cwd": "${workspaceRoot}"
-        // },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Launch Chrome",
-            "name": "打开主页",
-            "program": "${workspaceRoot}/Test/run.js",
-            "args":["13457","${workspaceRoot}","/index.html"]
-        },
-        // {
-        //     "type": "chrome",
-        //     "request": "attach",
-        //     "name": "Attach Chrome",
-        //     "port": 9222,
-        //     "sourceMaps": true,
-        //     "webRoot": "${workspaceRoot}"
-        // },
         {
             "type": "node",
             "request": "launch",
             "name": "启动程序",
             "program": "${workspaceRoot}/test/run.js"
-        },
-        {
-            "type": "node",
-            "request": "attach",
-            "name": "附加到进程",
-            "address": "localhost",
-            "port": 5858
         }
     ]
 }
